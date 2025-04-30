@@ -10,7 +10,7 @@ from PIL import Image
 from io import BytesIO
 
 # BOT TOKEN
-bot = telebot.TeleBot("7232125515:AAFAEwM8wItfAqlM7bFP45x7D51ZCmCG9O4")
+bot = telebot.TeleBot("8136008912:AAHwM1ZBZ2WxgCnFpRA0MC_EIr9KcRQiF3c")
 
 # Directory to store downloads
 DOWNLOAD_DIR = "downloads"
