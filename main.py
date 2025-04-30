@@ -194,15 +194,22 @@ def download_video_any(url):
         'merge_output_format': 'mp4',
         'writesubtitles': True,
         'writeautomaticsub': True,
-        'subtitleslangs': ['en'],
+        'subtitleslangs': ['en', 'auto'],
         'convert_subtitles': 'srt',
         'ignoreerrors': True
     }
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([url])
-        subtitle_path = video_path.replace('.mp4', '.en.srt')
-        return video_path, subtitle_path if os.path.exists(subtitle_path) else None
+            result = ydl.extract_info(url, download=True)
+            subtitle_path = None
+            if 'subtitles' in result and result['subtitles']:
+                lang = list(result['subtitles'].keys())[0]
+                subtitle_path = video_path.replace('.mp4', f".{lang}.srt")
+            elif 'automatic_captions' in result and result['automatic_captions']:
+                lang = list(result['automatic_captions'].keys())[0]
+                subtitle_path = video_path.replace('.mp4', f".{lang}.srt")
+
+        return video_path, subtitle_path if subtitle_path and os.path.exists(subtitle_path) else None
     except Exception as e:
         print(f"Download error: {e}")
         return None, None
