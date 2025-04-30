@@ -158,11 +158,14 @@ def download_youtube_video(call):
         if os.path.exists(output_path):
             os.remove(output_path)
 
+
+
 # OTHER VIDEO HANDLER
 @bot.message_handler(func=lambda msg: is_supported_url(msg.text) and not is_youtube_url(msg.text))
 def handle_social_video(msg):
     url = msg.text
     try:
+        bot.send_chat_action(msg.chat.id, 'upload_video')  # Farriinta “Sending a video…”
         path = download_video_any(url)
         with open(path, 'rb') as f:
             bot.send_video(msg.chat.id, f)
@@ -175,11 +178,12 @@ def handle_social_video(msg):
 def download_video_any(url):
     filename = os.path.join(DOWNLOAD_DIR, f"{uuid.uuid4()}.mp4")
     ydl_opts = {
-        'format': 'best',
+        'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
         'outtmpl': filename,
         'quiet': True,
         'noplaylist': True,
-        'merge_output_format': 'mp4'
+        'merge_output_format': 'mp4',
+        'ignoreerrors': True
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
