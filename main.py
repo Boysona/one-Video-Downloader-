@@ -33,7 +33,7 @@ def start_handler(message):
     user_id = message.chat.id
     save_user(user_id)
     username = f"@{message.from_user.username}" if message.from_user.username else message.from_user.first_name
-    text = f"👋 Salam {username}, Send me a TikTok, YouTube, Instagram, Facebook & more link, I’ll download it for you!"
+    text = f"👋 Salam {username}, Send me a TikTok,Instagram, Facebook & more link, I’ll download it for you!"
     bot.send_message(user_id, text)
     if user_id == ADMIN_ID:
         show_admin_panel(user_id)
